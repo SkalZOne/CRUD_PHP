@@ -2,6 +2,8 @@
 
 session_start();
 
+require_once __DIR__ . '/config.php';
+
 function addValidationMessage(string $fieldName, string $message)
 {
     $_SESSION['validation'][$fieldName] = $message;
@@ -39,11 +41,38 @@ function uploadFile(array $file, string $prefix = 'avatar_')
     $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $fileName = $prefix . time() . ".$ext";
 
-    $path = "$uploadPath/$fileName";
-
-    if (!move_uploaded_file($file['tmp_name'], $path)) {
+    if (!move_uploaded_file($file['tmp_name'], "$uploadPath/$fileName")) {
         die('Ошибка при загрузке файла на сервер');
     }
 
-    return $path;
+    return "uploads/$fileName";
+}
+
+function getPDO()
+{
+    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
+
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ];
+
+    return new PDO($dsn, DB_USER, DB_PASS, $options);
+}
+
+function findUser($email) {
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute(['email' => $email]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getCurrentUser($id) {
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+    $stmt->execute(['id' => $id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }

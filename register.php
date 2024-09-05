@@ -7,7 +7,7 @@ require_once __DIR__ . "/src/helpers.php";
 <?php include_once __DIR__ . "/src/components/head.php" ?>
 
 <body>
-    <form action="src/actions/register.php" method="post" enctype="multipart/form-data">
+    <form class="custom-form" action="src/actions/register.php" method="post" enctype="multipart/form-data">
         <h2>Sign Up</h2>
 
 
@@ -61,8 +61,8 @@ require_once __DIR__ . "/src/helpers.php";
         <button>Sign Up</button>
     </form>
     <p>Already have <a href="index.php">account?</a></a></p>
-
     <?php $_SESSION = [] ?>
+
     <script src="assets/app.js"></script>
 </body>
 

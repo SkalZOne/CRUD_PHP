@@ -19,7 +19,9 @@ if (!empty($avatar['name'])) {
         addValidationMessage('avatar', 'The file format must be png or jpeg');
     }
 
-    uploadFile($avatar);
+    if (!getValidationMessage('avatar')) {
+        $avatarPath = uploadFile($avatar);
+    }
 }
 
 
@@ -32,6 +34,25 @@ if (empty($email)) {
 
 if (!empty($_SESSION['validation'])) {
     setOldValue('email', $email);
-    // setOldValue('avatar', $avatar);
+    setOldValue('avatar', $avatar);
     redirect('/register.php');
 }
+
+// Загрузка готовых данных в БД, через PDO драйвер
+$pdo = getPDO();
+
+$query = 'INSERT INTO users (email, password, avatar) VALUES (:email, :password, :avatar)';
+$params = [
+    'email' => $email,
+    'avatar' => $avatarPath,
+    'password' => password_hash($password, PASSWORD_DEFAULT),
+];
+$stmt = $pdo->prepare($query);
+
+try {
+    $stmt->execute($params);
+} catch (PDOException $e) {
+    die($e->getMessage());
+}
+
+redirect('/');
