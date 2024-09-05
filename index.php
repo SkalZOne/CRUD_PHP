@@ -6,7 +6,7 @@ require_once __DIR__ . "/src/helpers.php";
 <?php include_once __DIR__ . "/src/components/head.php" ?>
 <body>
     <form class="custom-form" action="src/actions/login.php" method="post">
-        <h2>Вход</h2>
+        <h2>Sign In</h2>
 
             <label for="email">
                 <input 

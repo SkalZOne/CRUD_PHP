@@ -34,7 +34,6 @@ if (empty($email)) {
 
 if (!empty($_SESSION['validation'])) {
     setOldValue('email', $email);
-    setOldValue('avatar', $avatar);
     redirect('/register.php');
 }
 

@@ -9,10 +9,10 @@ $user = getCurrentUser($_SESSION['user']['id']);
 <?php include_once __DIR__ . "/src/components/head.php" ?>
 <body>
     <div class="container">
-        <h2>Добро пожаловать, <?php echo $user['email'] ?></h2>
+        <h2>Welcome, <?php echo $user['email'] ?></h2>
         <img src="<?php echo $user['avatar'] ?>" alt="">
         <form action="src/actions/logout.php" method="post">
-            <button>Выйти</button>
+            <button>Logout</button>
         </form>
     </div>
 </body>
